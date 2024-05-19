@@ -97,14 +97,12 @@ io.on('connection', (socket) => {
             serverLog('join_room command failed', JSON.stringify(response));
             return;
         }
-        if ((typeof username == 'undefined') || (username === null)) {
-
+        if ((typeof username == 'undefined') || (username === null) || (username == "")) {
             response = {};
             response.result = 'fail';
-            response.message = 'client did not send a valid username to join the chat room';
+            response.message = 'client did not send a valid username to join the chat room. It was ' + username;
             socket.emit('join_room_response', response);
             serverLog('join_room command failed', JSON.stringify(response));
-            serverLog('This was the username: ' + username);
             return;
         }
 
