@@ -11,12 +11,19 @@
             .headerrow {
                 background-color: darkseagreen;
             }
-            .join_room_response {
-                background-color: rgb(223,223,223);
-                margin: 1px 1px 1px 10px;
+
+            #messagePane {
+                background-color: rgb(224, 243, 224);
             }
+
+            .join_room_response,
+            .left_room_response {
+                background-color: rgb(247,247,247);
+            }
+
             .chat_message {
-                color: rgb(53, 3, 168);
+                color: rgb(0, 0, 0);
+                margin: 1px 1px 1px 1px;
                 font-size: 125%;
             }
         </style>
@@ -26,23 +33,31 @@
         <div class="container-fluid">
             <div class="row m-3 headerrow"> 
                 <div class="col text-center">
-                    <h3>Lobby</h3>
+                    <h3 id="lobbyTitle">Lobby</h3>
                 </div>
             </div>
 
             <div class="row m-3 ">
-                <div class="row align-items-center justify-content-center m-3">
-                    <div class="col-8">
-                        <div class="input-group">
-                            <input type="text" class="form-control text-nowrap" id="chatMessage" placeholder="Enter your message here" aria-label="Enter your message to send to the chat room"/>
-                            <button type="submit" class="btn btn-primary text-nowrap" id="chatButton" onclick="sendChatMessage()">Send</button>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="col">
-                    <h4>Messages</h4>
-                    <div id="messages">
+                    <div class="row align-items-start justify-content-center">
+                        <div class="col-md-4">
+                            <h4>Players</h4>
+                            <div id="players" class="align-items-end text-right m-3">
+                            </div>
+                        </div>
+                        <div class="col-md-8" id="messagePane">
+                            <div>
+                                <h4>Messages</h4>
+                            </div>
+                            <div class="input-group">
+                                <input type="text" class="form-control text-nowrap" id="chatMessage" placeholder="Enter your message here"
+                                                aria-label="Enter your message to send to the chat room" />
+                                <button type="submit" class="btn btn-primary text-nowrap" id="chatButton"
+                                                onclick="sendChatMessage()">Send</button>
+                            </div>
+                            <div class="mt-3" id="messages">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,6 +68,9 @@
             crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"
             integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs"
+            crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.3/jquery-ui.min.js"
+            integrity="sha384-oVpH0DXO9nadZxTmPSQo3YwWqfN/Up9aRDHCxLrw8A2LjkFNcM/XILw4KGMaL95z"
             crossorigin="anonymous"></script>
         <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
             integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
