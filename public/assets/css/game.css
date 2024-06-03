@@ -30,5 +30,6 @@ table#game_board td {
 }
 
 td.hovered_over:hover {
-    background-image: url("public/assets/images/hover.gif");
+    background-image: url("/assets/images/hover.gif");
+    opacity: 0.5;
 }

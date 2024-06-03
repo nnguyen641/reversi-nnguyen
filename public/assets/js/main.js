@@ -140,7 +140,7 @@ socket.on('game_start_response', (payload) => {
     let newNode = makeStartGameButton();
     $('.socket_' + payload.socket_id + ' button').replaceWith(newNode);
     // Jump to the game page
-    window.location.href = 'game.html?username='+username+'&game_id='+payload.game_id;
+    window.location.href = 'game.html?username=' + username + '&game_id=' + payload.game_id;
 });
 
 socket.on('join_room_response', (payload) => {
@@ -289,13 +289,13 @@ socket.on('game_update', (payload) => {
     }
 
     let board = payload.game.board;
-    if((typeof board === 'undefined') || (board === null)){
+    if ((typeof board === 'undefined') || (board === null)) {
         console.log("Server did not send valid board to display.");
         return;
     }
 
     // Update my color
-    if(socket.id === payload.game.player_white.socket){
+    if (socket.id === payload.game.player_white.socket) {
         my_color = 'white';
     } else if (socket.id === payload.game.player_black.socket) {
         my_color = 'black';
@@ -306,14 +306,24 @@ socket.on('game_update', (payload) => {
 
     $("#my_color").html('<h3 id="my_color">I am ' + my_color + '</h3>');
 
+    let whitesum = 0;
+    let blacksum = 0;
+
+
     // Animate all the changes to the board
-    for(let row = 0; row < 8; row++){
-        for (let column = 0; column < 8; column++){
+    for (let row = 0; row < 8; row++) {
+        for (let column = 0; column < 8; column++) {
+            if (board[row][column] === 'w'){
+                whitesum++;
+            } else if (board[row][column] === 'b'){
+                blacksum++;
+            }
+            
             // check to see if server changed any spaces on the board
-            if(old_board[row][column] !== board[row][column]){
+            if (old_board[row][column] !== board[row][column]) {
                 let graphic = "";
                 let alt = "";
-                if ((old_board[row][column] === '?') && (board[row][column] === ' ')){
+                if ((old_board[row][column] === '?') && (board[row][column] === ' ')) {
                     graphic = "empty.gif";
                     alt = "empty space";
                 } else if ((old_board[row][column] === '?') && (board[row][column] === 'w')) {
@@ -350,17 +360,69 @@ socket.on('game_update', (payload) => {
                 $('#' + row + '_' + column).html('<img class="img-fluid" src="assets/images/' + graphic + '?time=' + t + '" alt="' + alt + '" />');
 
                 $('#' + row + '_' + column).off('click');
-                if(board[row][column] === ' '){
+                if (board[row][column] === ' ') {
                     $('#' + row + '_' + column).addClass('hovered_over');
+                    $('#' + row + '_' + column).click(((r, c) => {
+                        return (() => {
+                            let payload = {
+                                row: r,
+                                column: c,
+                                color: my_color
+                            };
+                            console.log('**** Client Log Message, sending \'play_token\'command: ' + JSON.stringify(payload))
+                            socket.emit('play_token', payload);
+                        });
+                    })(row, column));
+
                 } else {
-                    console.log("**Error with hover!!!**")
+                    $('#' + row + '_' + column).removeClass('hovered_over');
                 }
             }
         }
     }
 
+    $("#whitesum").html(whitesum);
+    $("#blacksum").html(blacksum);
     old_board = board;
 
+});
+
+socket.on('play_token_response', (payload) => {
+    if ((typeof payload == 'undefined') || (payload === null)) {
+        console.log('Server did not send a payload.');
+        return;
+    }
+
+    if (payload.result === 'fail') {
+        console.log(payload.message);
+        return;
+    }
+
+    console.log("Play token command success.")
+});
+
+socket.on('game_over', (payload) => {
+    if ((typeof payload == 'undefined') || (payload === null)) {
+        console.log('Server did not send a payload.');
+        return;
+    }
+
+    if (payload.result === 'fail') {
+        console.log(payload.message);
+        return;
+    }
+
+    // announce with a button to the lobby
+    let nodeA = $("<div id='game_over'></div>");
+    let nodeB = $("<h1>Game Over</h1>");
+    let nodeC = $("<h2>" + payload.who_won + " won!</h2>");
+    let nodeD = $("<a href='lobby.html?username=" + username + "' class='btn btn-lg btn-success' role='button'> Return to Lobby </a>");
+    nodeA.append(nodeB);
+    nodeA.append(nodeC);
+    nodeA.append(nodeD);
+    nodeA.hide();
+    $('#game_over').replaceWith(nodeA);
+    nodeA.show("fade", 1000);
 });
 
 // request to join the chat room
@@ -372,6 +434,7 @@ $(() => {
     socket.emit('join_room', request);
 
     $("#lobbyTitle").html(username + "'s Lobby");
+    $("#quit").html("<a href='lobby.html?username=" + username + "' class='btn btn-danger' role='button'> Quit </a>");
 
     $("#chatMessage").keypress(function (e) {
         let key = e.which;
