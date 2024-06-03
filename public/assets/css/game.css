@@ -28,3 +28,7 @@ table#game_board td {
     /* margin: 50px; */
     /* padding: 1000px; */
 }
+
+td.hovered_over:hover {
+    background-image: url("public/assets/images/hover.gif");
+}
