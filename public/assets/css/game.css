@@ -24,6 +24,7 @@ table#game_board {
 }
 
 table#game_board td {
+    background-color: green;
     border: 1px solid black;
     /* margin: 50px; */
     /* padding: 1000px; */

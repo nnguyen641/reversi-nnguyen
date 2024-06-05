@@ -563,6 +563,31 @@ io.on('connection', (socket) => {
             return;
         }
 
+        // make sure the current attempt is by the correct color
+        if (color !== game.whose_turn){
+            let response = {
+                result: 'fail',
+                message: 'play_token played the wrong color. It\'s not their turn'
+            }
+            socket.emit('play_token_response', response);
+            serverLog('play_token command failed', JSON.stringify(response));
+            return;
+        }
+
+        // make sure the current play is coming from the expected player
+        if (
+            ((game.whose_turn === 'white') && (game.player_white.socket != socket.id)) ||
+            ((game.whose_turn === 'black') && (game.player_black.socket != socket.id))
+        ) {
+            let response = {
+                result: 'fail',
+                message: 'play_token played the right color, but by the wrong player'
+            }
+            socket.emit('play_token_response', response);
+            serverLog('play_token command failed', JSON.stringify(response));
+            return;
+        }
+
         let response = {
             result: 'success',   
         }
@@ -709,13 +734,13 @@ function send_game_update(socket, game_id, message){
         }
         io.in(game_id).emit('game_over', payload);
 
-        // Delete old games after one hour
-        // setTimeout(
-        //     ((id) =>{
-        //         return(() => {
-        //             delete games[id];
-        //         });
-        //     })(game_id),60*60*1000
-        // );
+        //Delete old games after one hour
+        setTimeout(
+            ((id) =>{
+                return(() => {
+                    delete games[id];
+                });
+            })(game_id),60*60*1000
+        );
     }
 }
