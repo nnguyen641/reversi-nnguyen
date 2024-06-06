@@ -880,7 +880,7 @@ function send_game_update(socket, game_id, message) {
 
     if (legal_moves === 0) {
         let winner = "Tie Game";
-        if(whitesum > blacksum){
+        if (whitesum > blacksum) {
             winner = "gold";
         }
         if (whitesum < blacksum) {
