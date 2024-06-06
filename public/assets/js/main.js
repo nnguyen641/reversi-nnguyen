@@ -305,11 +305,11 @@ socket.on('game_update', (payload) => {
     }
 
 
-    if(my_color === 'white'){
+    if (my_color === 'white') {
         $("#my_color").html('<h3 id="my_color">I am gold</h3>');
-    } else if (my_color === 'black'){
+    } else if (my_color === 'black') {
         $("#my_color").html('<h3 id="my_color">I am green</h3>');
-    } else{
+    } else {
         $("#my_color").html('<h3 id="my_color">I don\'t know what color I am</h3>');
     }
 
@@ -328,12 +328,12 @@ socket.on('game_update', (payload) => {
     // Animate all the changes to the board
     for (let row = 0; row < 8; row++) {
         for (let column = 0; column < 8; column++) {
-            if (board[row][column] === 'w'){
+            if (board[row][column] === 'w') {
                 whitesum++;
-            } else if (board[row][column] === 'b'){
+            } else if (board[row][column] === 'b') {
                 blacksum++;
             }
-            
+
             // check to see if server changed any spaces on the board
             if (old_board[row][column] !== board[row][column]) {
                 let graphic = "";
@@ -373,9 +373,12 @@ socket.on('game_update', (payload) => {
 
                 const t = Date.now();
                 $('#' + row + '_' + column).html('<img class="img-fluid" src="assets/images/' + graphic + '?time=' + t + '" alt="' + alt + '" />');
-
-                $('#' + row + '_' + column).off('click');
-                if (board[row][column] === ' ') {
+            }
+            // Set up interactivity 
+            $('#' + row + '_' + column).off('click');
+            $('#' + row + '_' + column).removeClass('hovered_over');
+            if (payload.game.whose_turn === my_color) {
+                if (payload.game.legal_moves[row][column] === my_color.substr(0, 1)) {
                     $('#' + row + '_' + column).addClass('hovered_over');
                     $('#' + row + '_' + column).click(((r, c) => {
                         return (() => {
@@ -388,9 +391,6 @@ socket.on('game_update', (payload) => {
                             socket.emit('play_token', payload);
                         });
                     })(row, column));
-
-                } else {
-                    $('#' + row + '_' + column).removeClass('hovered_over');
                 }
             }
         }

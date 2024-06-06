@@ -651,6 +651,10 @@ function check_line_match(color, dr, dc, r, c, board) {
         return true;
     }
 
+    if (board[r][c] === ' ') {
+        return false;
+    }
+
     // check to make sure we aren't going to walk off board
     if ((r + dr < 0) || (r + dr > 7)) {
         return false;
