@@ -1,8 +1,9 @@
 body {
-    background-color: rgb(177,224,177);
+    background-color: rgb(177, 224, 177);
 }
 
-.headerrow, #messagePane {
+.headerrow,
+#messagePane {
     background-color: rgb(224, 243, 224);
 }
 
