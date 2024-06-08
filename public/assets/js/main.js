@@ -12,9 +12,15 @@ function getIRIParameterValue(requestedKey) {
     return null;
 }
 
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
 let username = decodeURI(getIRIParameterValue('username'));
+let blueyNames = ['Bluey', 'Bingo', 'Chili', 'Bandit'];
 if ((typeof username == 'undefined') || (username === null) || (username === "") || (username == "null")) {
-    username = "Anonymous_" + Math.floor(Math.random() * 1000);
+    userInt = getRandomInt(4);
+    username = "Anonymous_" + blueyNames[userInt];
 }
 
 // $('#messages').prepend('<b>' + username + ':</b>'); 
@@ -34,7 +40,7 @@ socket.on('log', function (array) {
 });
 
 function makeInviteButton(socket_id) {
-    let newHTML = "<button type='button' class='btn btn-outline-primary'>Invite</button>";
+    let newHTML = "<button type='button' class='btn btn-primary'>Invite</button>";
     let newNode = $(newHTML);
     newNode.click(() => {
         let payload = {
@@ -48,7 +54,7 @@ function makeInviteButton(socket_id) {
 }
 
 function makeInvitedButton(socket_id) {
-    let newHTML = "<button type='button' class='btn btn-primary'>Invited</button>";
+    let newHTML = "<button type='button' class='btn btn-secondary'>Invited</button>";
     let newNode = $(newHTML);
     newNode.click(() => {
         let payload = {
@@ -183,13 +189,13 @@ socket.on('join_room_response', (payload) => {
     nodeA.hide();
 
     let nodeB = $("<div></div>");
-    nodeB.addClass("col");
-    nodeB.addClass("text-end");
+    nodeB.addClass("col-8");
+    nodeB.addClass("text-start");
     nodeB.addClass("socket_" + payload.socket_id);
-    nodeB.append("<h4>" + payload.username + "</h4>");
+    nodeB.append("<h3>" + payload.username + "</h4>");
 
     let nodeC = $("<div></div>");
-    nodeC.addClass("col");
+    nodeC.addClass("col-4");
     nodeC.addClass("text-start");
     nodeC.addClass("socket_" + payload.socket_id);
     let buttonC = makeInviteButton(payload.socket_id);
@@ -202,13 +208,14 @@ socket.on('join_room_response', (payload) => {
     nodeA.show("fade", 1000);
 
     // announcing in the chat that someone has arrived 
-    let newHTML = '<p class=\'join_room_response\'>' + payload.username + ' joined the chatroom. (There are ' + payload.count + ' users in the room)</p>';
+    let newHTML = '<p class=\'join_room_response py-1\'>' + payload.username + ' joined the chatroom. (There are ' + payload.count + ' users in the room)</p>';
 
     let newNode = $(newHTML);
     newNode.hide();
 
     $('#messages').prepend(newNode);
     newNode.show("fade", 500);
+    $('#quit').show();
 });
 
 socket.on('player_disconnected', (payload) => {
@@ -227,7 +234,7 @@ socket.on('player_disconnected', (payload) => {
         domElements.hide("fade", 500);
     }
 
-    let newHTML = '<p class=\'left_room_response\'>' + payload.username + ' left the chatroom. (There are ' + payload.count + ' users in the room)</p>';
+    let newHTML = '<p class=\'left_room_response py-1\'>' + payload.username + ' left the chatroom. (There are ' + payload.count + ' users in the room)</p>';
 
     let newNode = $(newHTML);
     newNode.hide();
@@ -257,7 +264,7 @@ socket.on('send_chat_message_response', (payload) => {
         return;
     }
 
-    let newHTML = '<p class=\'chat_message\'><b>' + payload.username + '</b>: ' + payload.message + '</p>';
+    let newHTML = '<p class=\'chat_message py-2\'><b>' + payload.username + '</b>: ' + payload.message + '</p>';
     let newNode = $(newHTML);
     newNode.hide();
     $('#messages').prepend(newNode);
@@ -466,6 +473,7 @@ socket.on('game_over', (payload) => {
     nodeA.append(nodeC);
     nodeA.append(nodeD);
     nodeA.hide();
+    $('#quit').hide();
     $('#game_over').replaceWith(nodeA);
     nodeA.show("fade", 1000);
 });
@@ -479,7 +487,7 @@ $(() => {
     socket.emit('join_room', request);
 
     $("#lobbyTitle").html(username + "'s Lobby");
-    $("#quit").html("<a href='lobby.html?username=" + username + "' class='btn btn-danger' role='button'> Quit </a>");
+    $("#quit").html("<a href='lobby.html?username=" + username + "' class='btn btn-danger pt-3' role='button'> Quit </a>");
 
     $("#chatMessage").keypress(function (e) {
         let key = e.which;

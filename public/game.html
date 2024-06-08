@@ -12,9 +12,9 @@
 
 <body>
     <div class="container-fluid">
-        <div class="row m-3 headerrow">
+        <div class="row m-3 headerrow pt-3 pb-2 rounded">
             <div class="col text-center">
-                <h3 id="gameTitle">Reversi</h3>
+                <h1 id="gameTitle">Bluversi</h1>
             </div>
         </div>
 
@@ -24,14 +24,14 @@
             </div>
         </div>
 
-        <div class="row m-3">
+        <div class="row m-3 turnSection">
             <div class="col-md-8 text-center justify-content-center">
                 <h3 id="my_color">My Color</h3><br />
-                <img class="img-fluid" src="assets/images/gold_idle.gif" alt="Gold Score" />
+                <img class="img-fluid mx-3" src="assets/images/gold_idle.gif" alt="Gold Score" />
                 <span id="whitesum">Gold Sum</span>
                 <span id="vs">vs</span>
                 <span id="blacksum">Green Sum</span>
-                <img class="img-fluid" src="assets/images/green_idle.gif" alt="Green Score" />
+                <img class="img-fluid mx-3" src="assets/images/green_idle.gif" alt="Green Score" />
             </div>
             <div class="col-md-4 text-end justify-content-end">
                 <div id="quit">Quit Button</div>
@@ -42,8 +42,8 @@
             <div class="col">
                 <div class="row align-items-start justify-content-center">
                     <div class="col-md-8 table-responsive">
-                        <div class="progress">
-                            <div id="elapsed" class="progress-bar progress-bar-animated progress-bar-striped bg-success"
+                        <div class="progress m-3" style="height: 20px;">
+                            <div id="elapsed" class="progress-bar progress-bar-animated progress-bar-striped"
                                 role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0"
                                 aria-valuemax="100"></div>
                         </div>
@@ -131,12 +131,12 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="col-md-4" id="messagePane">
+                    <div class="col-md-4 p-5 rounded" id="messagePane">
                         <div>
-                            <h4>Messages</h4>
+                            <h2>Messages</h2>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control text-nowrap" id="chatMessage"
+                            <input type="text" class="form-control text-nowrap fst-italic" id="chatMessage"
                                 placeholder="Enter your message here"
                                 aria-label="Enter your message to send to the chat room" />
                             <button type="submit" class="btn btn-primary text-nowrap" id="chatButton"

@@ -7,13 +7,19 @@ body {
     background-color: #c2e3fe;
     background-size: 900px;
     font-family: 'open-sans', Arial, sans-serif;
-    color:#5a5a87;
+    color: #5a5a87;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: 'heyam', Arial, sans-serif;
     color: #5a5a87;
 }
+
 #aboutText {
     background-color: #ffffff;
 }
