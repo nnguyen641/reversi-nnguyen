@@ -1,0 +1,72 @@
+@font-face {
+    font-family: "heyam";
+    src: url("../fonts/Heyam.ttf") format("truetype");
+}
+
+body {
+    background-color: #c2e3fe;
+    background-image: url("https://www.bluey.tv/wp-content/themes/bbc-bluey/assets/images/backgrounds/clouds-background.png");
+    background-size: 900px;
+    font-family: 'open-sans', Arial, sans-serif;
+}
+
+.input-group-text {
+    font-family: 'open-sans', Arial, sans-serif;
+    font-weight: 700;
+}
+
+.btn:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 100%;
+    transform: scale(0);
+    transition-property: transform;
+    transition-duration: .3s;
+    transition-timing-function: ease-out;
+    will-change: transform;
+}
+
+#bluversi_logo {
+    font-family: "Heyam", "open-sans", "arial", "sans-serif";
+    color: #88cafc;
+    font-size: 15rem;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 28px;
+    box-shadow: 5px 5px #5a5a87;
+}
+
+.btn {
+    align-items: center;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 28px;
+    /* font-weight: 700; */
+    cursor: pointer;
+    display: flex;
+    font-family: "Heyam", "open-sans", "arial", "sans-serif";
+    font-size: 1.25rem;
+    height: 56px;
+    justify-content: center;
+    /* line-height: 22px; */
+    padding: 0 32px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #5a5a87;
+    border-color: #5a5a87;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #414162;
+    border-color: #414162;
+}
